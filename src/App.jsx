@@ -50,16 +50,31 @@ Bu şirket çalışanlarını gözetlemek istiyor. Göreviniz aşağıdakileri y
            
        2. Eğer kullanıcı "Evil Corp." metnini yazarsa ("title case" olarak) yazarsa, bu dize hem userInput state'inde hem de textarea'da otomatik olarak "Good Corp." ile değiştirilmelidir. 
        
-    3. Metin alanına "Evil Corp. test" yazarak uygulamayı test edin. Bu görevleri doğru bir şekilde tamamlarsanız, her harf yazdığınızda bir console.log mesajı almalısınız ve mesajlar sampleOutput.md dosyasındakiler gibi olmalıdır.
+      3. Metin alanına "Evil Corp. test" yazarak uygulamayı test edin. Bu görevleri doğru bir şekilde tamamlarsanız, her harf yazdığınızda bir console.log mesajı almalısınız ve mesajlar sampleOutput.md dosyasındakiler gibi olmalıdır.
 
        
        4. Yalnızca aşağıdaki kodu yazmanız gerekir. Yukarıdaki veya projenin başka bir yerindeki kodların hiçbirinin değiştirilmesi gerekmiyor.
 */
+  console.log(userInput)
+  console.log(trackingReports)
 
   return (
     <div>
       <Header />
-      <textarea placeholder='Raporunuzu buraya yazın...' />
+      <textarea value={userInput}
+      onChange={(e) => {
+        const inputValue = e.target.value
+        const infractionDetected = inputValue.includes("Evil Corp.") ? true : false
+        setUserInput(inputValue.replace("Evil Corp.","Good Corp."))
+
+        setTrackingReports(prev => [...trackingReports,
+          {
+            "timeStamp" : getTimeStamp(),
+            "employeeInput" : inputValue, 
+            infractionDetected
+          }])
+      }}
+      placeholder='Raporunuzu buraya yazın...' />
     </div>
   )
 }
